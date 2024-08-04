@@ -1,0 +1,28 @@
+---
+import type { Page } from "@/types/pagitation";
+export interface Props {
+  next: Page["url"]["next"];
+  prev: Page["url"]["prev"];
+}
+const { prev, next } = Astro.props;
+---
+
+<section>
+  {prev && <a href={prev}>artículos más recientes</a>}
+
+  {next && <a href={next}>artículos anteriores</a>}
+
+  <style>
+    section {
+      display: flex;
+      gap: 1rem;
+    }
+    a {
+      text-decoration: none;
+      color: var(--accent);
+      &:hover {
+        text-decoration: underline;
+      }
+    }
+  </style>
+</section>

@@ -1,0 +1,35 @@
+---
+import Footer from "@/components/Footer.astro";
+import Header from "@/components/Header.astro";
+import SEO from "@/components/SEO.astro";
+import ButtonUp from "@/components/ui/ButtonUp.astro";
+import { getLangFromUrl } from "@/i18n/utils";
+interface Props {
+  title: string;
+  description: string;
+  canonical?: string;
+  image?: string;
+  lang?: string;
+}
+const { title, description, canonical, image, lang = "es" } = Astro.props;
+const language = getLangFromUrl(Astro.url) ?? lang;
+---
+
+<!doctype html>
+<html lang={language}>
+  <head>
+    <SEO
+      description={description}
+      title={title}
+      image={image}
+      canonical={canonical}
+    />
+    <slot name="head" />
+  </head>
+  <body>
+    <Header />
+    <slot />
+    <ButtonUp />
+    <Footer />
+  </body>
+</html>

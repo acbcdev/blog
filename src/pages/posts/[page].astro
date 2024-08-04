@@ -1,0 +1,75 @@
+---
+import { getCollection, type CollectionEntry } from "astro:content";
+import Layout from "@/layouts/Layout.astro";
+import type { Page } from "@/types/pagitation";
+
+import Pagitation from "@/components/ui/Pagitation.astro";
+import CardPost from "@/components/ui/CardPost.astro";
+
+export async function getStaticPaths({
+  paginate,
+}: {
+  paginate: (posts: CollectionEntry<"blog">[], options: unknown) => void;
+}) {
+  const posts = await getCollection("blog");
+
+  return paginate(posts, { pageSize: 12 });
+}
+
+export interface Props {
+  page: Page<CollectionEntry<"blog">>;
+}
+
+const { page } = Astro.props;
+---
+
+<!-- //TODO: ADD description -->
+<Layout title={`Articules by Topic: `} description={""}>
+  <main>
+    <ul class="posts">
+      {
+        page.data.map((post) => (
+          <li>
+            <CardPost post={post} />
+          </li>
+        ))
+      }
+    </ul>
+    <Pagitation next={page.url.next} prev={page.url.prev} />
+  </main>
+</Layout>
+
+<style>
+  main {
+    width: 100vw;
+    display: grid;
+    margin-inline: auto;
+    place-items: center;
+  }
+  .posts {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    /* align-items: center; */
+    gap: 1rem;
+  }
+  .posts li {
+    width: calc(30% - 1rem);
+  }
+
+  @media (max-width: 720px) {
+    ul {
+      gap: 0.5em;
+    }
+    .posts li {
+      width: 100%;
+      text-align: center;
+    }
+    .posts li:first-child {
+      margin-bottom: 0;
+    }
+    .posts li:first-child .title {
+      font-size: 1.563em;
+    }
+  }
+</style>

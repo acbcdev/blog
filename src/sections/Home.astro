@@ -1,0 +1,137 @@
+---
+import { getByLang, getLangFromUrl, useTranslations } from "@/i18n/utils";
+import { SITE_TITLE, SITE_DESCRIPTION } from "@/consts";
+import { getCollection } from "astro:content";
+import { defaultLang, type languages } from "@/i18n/ui";
+import CardPost from "@/components/ui/CardPost.astro";
+import Layout from "@/layouts/Layout.astro";
+
+export interface Props {
+  lang?: keyof typeof languages;
+}
+const { lang = defaultLang } = Astro.props;
+const posts = (await getCollection("blog"))
+  .sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf())
+  .filter((post) => {
+    return getByLang(post, lang);
+  })
+  .splice(0, 5);
+
+const tags = [
+  ...new Set(
+    posts.filter((post) => post.data.topic).map((post) => post.data.topic),
+  ),
+];
+
+const a = getLangFromUrl(Astro.url);
+const t = useTranslations(lang);
+---
+
+<Layout title={SITE_TITLE} description={SITE_DESCRIPTION} lang={lang}>
+  <main>
+    <section>
+      <ul class="posts">
+        {
+          posts.map((post) => (
+            <li>
+              <CardPost post={post} />
+            </li>
+          ))
+        }
+      </ul>
+      <h5><a href="/posts/1">{t("home.more")}</a></h5>
+    </section>
+    <section class="container-tags">
+      <h3>{t("home.topic")}</h3>
+      <ul>
+        {
+          tags.map((tag) => (
+            <li class="tag">
+              <a href={`/tags/${tag}/1`}>{tag}</a>
+            </li>
+          ))
+        }
+      </ul>
+    </section>
+  </main>
+</Layout>
+
+<style slot="head">
+  main {
+    width: 960px;
+  }
+  h5 {
+    margin-block: 3rem;
+    & a {
+      transition-duration: 0.2s;
+      text-decoration: none;
+      &:hover {
+        text-decoration: underline;
+      }
+    }
+  }
+  .posts {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 2rem;
+  }
+  .posts li {
+    width: calc(50% - 1rem);
+  }
+
+  .posts li:first-child {
+    width: 100%;
+    margin-bottom: 1rem;
+    text-align: center;
+  }
+  .posts li:first-child img {
+    width: 100%;
+  }
+  .posts li:first-child .title {
+    font-size: 2.369rem;
+  }
+
+  .container-tags {
+    width: 100%;
+    margin-block-start: 3rem;
+    & ul {
+      gap: 1rem;
+      display: flex;
+      flex-wrap: wrap;
+      margin-top: 1.8rem;
+      & li {
+        transition-duration: 0.2s;
+
+        &:hover {
+          scale: 1.1;
+        }
+      }
+      & a {
+        border-radius: 2rem;
+        padding: 0.8rem 1.2rem;
+
+        border: 3px solid rgb(var(--gray-light));
+        text-decoration: none;
+        &:hover {
+          border-color: var(--accent);
+        }
+      }
+    }
+  }
+
+  @media (max-width: 720px) {
+    ul {
+      gap: 0.5em;
+    }
+    .posts li {
+      width: 100%;
+      text-align: center;
+    }
+    .posts li:first-child {
+      margin-bottom: 0;
+    }
+    .posts li:first-child .title {
+      font-size: 1.563em;
+    }
+  }
+</style>

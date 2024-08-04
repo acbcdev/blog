@@ -1,0 +1,55 @@
+---
+import { Code } from "astro:components";
+
+const { code, lang, theme } = Astro.props;
+---
+
+<div class="code-container">
+  <Code code={code} lang={lang} theme={theme ?? "tokyo-night"} />
+  <button class="btn copy" data-copy={code}>Copy</button>
+</div>
+
+<script>
+  import { addGlobalEventListener } from "@/lib/dom";
+
+  addGlobalEventListener({
+    event: "click",
+    selector: ".copy",
+    callback: (e) => {
+      const $btn = e.target as HTMLButtonElement;
+      const code = $btn.dataset.copy ?? "";
+      navigator.clipboard
+        .writeText(code)
+        .then(() => {
+          if ($btn) $btn.textContent = "Copied!";
+          setTimeout(() => {
+            $btn.textContent = "Copy";
+          }, 1800);
+        })
+        .catch((err) => {
+          console.error("Failed to copy text: ", err);
+        });
+    },
+  });
+</script>
+<style>
+  .code-container {
+    position: relative;
+    & .btn {
+      display: none;
+      position: absolute;
+      cursor: pointer;
+      top: 0.5rem;
+      right: 0.5rem;
+      border: none;
+      padding: 0.25rem 0.5rem;
+      border-radius: var(--radius-md);
+      &:hover {
+        background: var(--accent);
+      }
+    }
+  }
+  .code-container:hover button {
+    display: inline;
+  }
+</style>

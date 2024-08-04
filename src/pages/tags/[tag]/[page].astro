@@ -1,0 +1,64 @@
+---
+import type { Page } from "@/types/pagitation";
+import Pagitation from "@/components/ui/Pagitation.astro";
+import CardPost from "@/components/ui/CardPost.astro";
+import Layout from "@/layouts/Layout.astro";
+import { getCollection, type CollectionEntry } from "astro:content";
+
+export async function getStaticPaths({
+  paginate,
+}: {
+  paginate: (posts: CollectionEntry<"blog">[], options: unknown) => void;
+}) {
+  const posts = await getCollection("blog");
+
+  const allTags = [...new Set(posts.map((post) => post.data.topic))];
+  return allTags.flatMap((tag) => {
+    const filteredPosts = posts.filter((post) => post.data.topic === tag);
+    return paginate(filteredPosts, {
+      params: { tag },
+      pageSize: 10,
+    });
+  });
+}
+export interface Props {
+  page: Page<CollectionEntry<"blog">>;
+}
+
+const { page } = Astro.props;
+const { tag } = Astro.params;
+const posts = (await getCollection("blog")).filter(
+  (post) => post.data.topic === tag,
+);
+---
+
+<Layout title={tag ?? `Articules by Topic: ${tag}`} description={tag ?? ""}>
+  <main>
+    <section>
+      <ul class="posts">
+        {
+          posts.map((post) => (
+            <li>
+              <CardPost post={post} />
+            </li>
+          ))
+        }
+      </ul>
+      <Pagitation next={page.url.next} prev={page.url.prev} />
+    </section>
+  </main>
+</Layout>
+
+<style>
+  main {
+    width: 960px;
+  }
+  .posts {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 2rem;
+  }
+  .posts li {
+    width: calc(50% - 1rem);
+  }
+</style>
