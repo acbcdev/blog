@@ -6,21 +6,17 @@ import { type CollectionEntry, getCollection } from "astro:content";
 // import BlogPost from "../../../layouts/BlogPost.astro";
 
 export async function getStaticPaths() {
-	const posts = await getCollection("blog");
-	const langs = Object.keys(languages) as (keyof typeof languages)[];
-	return posts.map((post) => {
-		return {
-			params: {
-				slug: modifySlug(post.slug),
-				lang: getByLang(post, langs[0]) ? langs[0] : langs[1],
-			},
-			props: post,
-		};
-	});
-	// return posts.map((post) => ({
-	// 	params: { slug: post.slug },
-	// 	props: post,
-	// }));
+  const posts = await getCollection("blog");
+  const langs = Object.keys(languages) as (keyof typeof languages)[];
+  return posts.map((post) => {
+    return {
+      params: {
+        slug: modifySlug(post.slug),
+        lang: getByLang(post, langs[0]) ? langs[0] : langs[1],
+      },
+      props: post,
+    };
+  });
 }
 type Props = CollectionEntry<"blog">;
 
@@ -30,5 +26,5 @@ const { Content } = await post.render();
 ---
 
 <BlogPost {...post.data}>
-	<Content />
+  <Content />
 </BlogPost>

@@ -9,6 +9,7 @@ export const ui = {
     'nav.home': 'Home',
     "home.more": "More Articles",
     "home.topic": "Articules by Topic",
+    "nav.twitter": "Twitter",
   },
   es: {
     'nav.twitter': 'Twitter',

@@ -1,4 +1,6 @@
 import { getByLang } from '@/i18n/utils'
+import { languages } from '@/i18n/ui'
+
 import { getCollection, type CollectionEntry } from 'astro:content'
 
 async function allPages(): Promise<CollectionEntry<'blog'>[]> {
@@ -6,5 +8,9 @@ async function allPages(): Promise<CollectionEntry<'blog'>[]> {
 }
 
 
-export const englishPage = (await allPages()).filter((post) => getByLang(post, 'en'))
-export const spanishPage = (await allPages()).filter((post) => getByLang(post, 'es'))
+const englishPosts = (await allPages()).filter((post) => getByLang(post, 'en'))
+const spanishPosts = (await allPages()).filter((post) => getByLang(post, 'es'))
+
+export const getPostsByLang = (lang: keyof typeof languages) => {
+  return lang === 'es' ? spanishPosts : englishPosts
+}

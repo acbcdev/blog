@@ -5,7 +5,6 @@ pubDate: 'Jul 02 2022'
 topic: 'rgx'
 heroImage: '/blog-placeholder-5.jpg'
 ---
-import CopyCode from '../../../components/CopyCode.astro'
 
 This theme comes with the [@astrojs/mdx](https://docs.astro.build/en/guides/integrations-guide/mdx/) integration installed and configured in your `astro.config.mjs` config file. If you prefer not to use MDX, you can disable support by removing the integration from your config file.
 
@@ -19,24 +18,25 @@ If you have existing content authored in MDX, this integration will hopefully ma
 
 Here is how you import and use a UI component inside of MDX. 
 When you open this page in the browser, you should see the clickable button below.
-{/* <CopyBtn code="const a = 21 " lang='js' /> */}
 
 
 
-<CopyCode lang='js' code="const react from 'react'"/>
+```js
+const react from 'react'
+```
 
-
-
-<CopyCode  lang="ts"   code="
+```ts
 const Gatos = 'Perros'
 datos [!code++]
-" />
-<CopyCode  lang="bash"   code="npm init " />
+```
+
+```bash
+npm init
+```
 
 
 
 
-<CopyCode code="const foo = 'bar'" lang='js' id='datos'  /> 
 ```python
 def sum(a,b):
   return a + b

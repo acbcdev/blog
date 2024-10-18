@@ -161,3 +161,21 @@ ul {
 	/* added line to stop words getting smushed together (as they go onto separate lines and some screen readers do not understand line feeds as a space */
 	white-space: nowrap;
 }
+
+.code-container  .copy-button{
+      display: none;
+      position: absolute;
+      cursor: pointer;
+      top: 0.5rem;
+      right: 0.5rem;
+      border: none;
+			transition-duration: 120ms;
+      padding: 0.25rem 0.5rem;
+      border-radius: var(--radius-md);
+      &:hover {
+        background: var(--accent);
+      }
+  }
+  .code-container:hover .copy-button {
+    display: inline;
+  }

@@ -31,14 +31,14 @@ export const $$ = <T extends HTMLElement>(
 /**
  * Adds a global event listener to the specified parent element default to the document.
  *
+ * @param {keyof HTMLElementEventMap} event - The event type to listen for.
  * @param {PropsAddGlobalEventListener} options - The options for the event listener.
  * @param {string} options.selector - The CSS selector for the target element.
- * @param {string} options.event - The event type to listen for.
  * @param {(e: Event) => void} options.callback - The callback function to execute when the event is triggered.
  * @param {Document | HTMLElement} [options.parent=document] - The parent element to attach the event listener to.
  * @return {void}
  */
-export function addGlobalEventListener({ selector, event, callback, parent = document }: PropsAddGlobalEventListener): void {
+export function addGlobalEventListener(event: keyof HTMLElementEventMap, { selector, callback, parent = document }: PropsAddGlobalEventListener): void {
   parent.addEventListener(event, (e) => {
     const eventTarget = e?.target as Element
     if (eventTarget.matches(selector)) callback(e)

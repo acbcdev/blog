@@ -28,4 +28,8 @@ export default defineConfig({
 			transformers: [transformerNotationDiff],
 		},
 	},
+	i18n: {
+		defaultLocale: "es",
+		locales: ["es", "en"],
+	},
 });

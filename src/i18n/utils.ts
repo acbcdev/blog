@@ -7,20 +7,23 @@ export function getLangFromUrl(url: URL) {
   return defaultLang;
 }
 
+
+
 export function useTranslations(lang: keyof typeof ui) {
   return function t(key: keyof (typeof ui)[typeof defaultLang]) {
     return ui[lang][key] || ui[defaultLang][key]
   };
 }
 
+
 /**
- * 
+ *
  * @example
  * const isEnglish = getByLang(post, lang);
  * @param post CollectionEntry<"blog">
  * @param lang keyof typeof languages
  * @returns boolean
- * 
+ *
  */
 export const getByLang = (
   post: CollectionEntry<"blog">,
@@ -32,6 +35,6 @@ export const getByLang = (
 };
 
 export const modifySlug = (slug: CollectionEntry<"blog">["slug"]) => {
-  const [lg, rest] = slug.split("/");
+  const [, rest] = slug.split("/");
   return rest
 }

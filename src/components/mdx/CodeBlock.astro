@@ -1,0 +1,35 @@
+<script>
+  import { $$ } from "@/lib/dom";
+
+  console.log("CodeBlock");
+  const $$codeBlocks = $$("pre");
+  for (const $codeBlock of $$codeBlocks) {
+    let wraper = document.createElement("div");
+    wraper.style.position = "relative";
+    wraper.className = "code-container";
+
+    let copyButton = document.createElement("button");
+    copyButton.title = "Copy code";
+    copyButton.className = "copy-button";
+    copyButton.textContent = "Copy";
+
+    $codeBlock.setAttribute("tabindex", "0");
+    $codeBlock.appendChild(copyButton);
+    $codeBlock.parentNode?.insertBefore(wraper, $codeBlock);
+    wraper.appendChild($codeBlock);
+
+    copyButton.addEventListener("click", async () => {
+      await copyCode($codeBlock, copyButton);
+    });
+
+    async function copyCode(block: Element, button: Element) {
+      let code = block.querySelector("code");
+      let text = code?.innerText ?? "";
+      await navigator.clipboard.writeText(text);
+      button.textContent = "Copied!";
+      setTimeout(() => {
+        button.textContent = "Copy";
+      }, 1800);
+    }
+  }
+</script>

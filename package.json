@@ -19,5 +19,11 @@
   },
   "devDependencies": {
     "@shikijs/transformers": "^1.10.3"
+  },
+  "pnpm": {
+    "overrides": {
+      "fast-xml-parser@<4.4.1": ">=4.4.1",
+      "micromatch@<4.0.8": ">=4.0.8"
+    }
   }
 }

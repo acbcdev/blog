@@ -13,10 +13,10 @@ const lang = getLangFromUrl(Astro.url);
 		<h2><a href={`/${lang}/`}>{SITE_TITLE}</a></h2>
 		<div class="internal-links"></div>
 		<div class="social-links">
-			<a href={LINKS.TWITTER} target="_blank">
+			<a href={LINKS.TWITTER} target="_blank" aria-label="Twitter Icon">
 				<TwitterSVG />
 			</a>
-			<a href={LINKS.GITHUB} target="_blank">
+			<a href={LINKS.GITHUB} target="_blank" aria-label="GitHub Icon">
 				<GithubSVG />
 			</a>
 		</div>

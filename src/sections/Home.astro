@@ -1,5 +1,5 @@
 ---
-import { getByLang, getLangFromUrl, useTranslations } from "@/i18n/utils";
+import { getByLang, useTranslations } from "@/i18n/utils";
 import { SITE_TITLE, SITE_DESCRIPTION } from "@/consts";
 import { getCollection } from "astro:content";
 import { defaultLang, type languages } from "@/i18n/ui";
@@ -23,7 +23,7 @@ const tags = [
   ),
 ];
 
-const a = getLangFromUrl(Astro.url);
+// const lang = getLangFromUrl(Astro.url);
 const t = useTranslations(lang);
 ---
 
@@ -39,7 +39,7 @@ const t = useTranslations(lang);
           ))
         }
       </ul>
-      <h5><a href="/posts/1">{t("home.more")}</a></h5>
+      <h4><a href={`posts/1`}>{t("home.more")}</a></h4>
     </section>
     <section class="container-tags">
       <h3>{t("home.topic")}</h3>
@@ -60,7 +60,7 @@ const t = useTranslations(lang);
   main {
     width: 960px;
   }
-  h5 {
+  h4 {
     margin-block: 3rem;
     & a {
       transition-duration: 0.2s;

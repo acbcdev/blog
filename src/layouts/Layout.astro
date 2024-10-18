@@ -4,6 +4,7 @@ import Header from "@/components/Header.astro";
 import SEO from "@/components/SEO.astro";
 import ButtonUp from "@/components/ui/ButtonUp.astro";
 import { getLangFromUrl } from "@/i18n/utils";
+
 interface Props {
   title: string;
   description: string;
@@ -31,5 +32,15 @@ const language = getLangFromUrl(Astro.url) ?? lang;
     <slot />
     <ButtonUp />
     <Footer />
+
+    <script>
+      import { getLangFromUrl } from "@/i18n/utils";
+      const url = new URL(window.location.href);
+
+      const lang = localStorage.getItem("lang");
+      if (lang !== getLangFromUrl(url)) {
+        window.location.replace(`/${lang}/`);
+      }
+    </script>
   </body>
 </html>

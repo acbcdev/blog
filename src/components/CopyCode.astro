@@ -12,8 +12,7 @@ const { code, lang, theme } = Astro.props;
 <script>
   import { addGlobalEventListener } from "@/lib/dom";
 
-  addGlobalEventListener({
-    event: "click",
+  addGlobalEventListener("click", {
     selector: ".copy",
     callback: (e) => {
       const $btn = e.target as HTMLButtonElement;

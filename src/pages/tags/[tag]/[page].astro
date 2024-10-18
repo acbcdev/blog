@@ -1,17 +1,13 @@
 ---
+import type { GetStaticPaths } from "astro";
 import type { Page } from "@/types/pagitation";
 import Pagitation from "@/components/ui/Pagitation.astro";
 import CardPost from "@/components/ui/CardPost.astro";
 import Layout from "@/layouts/Layout.astro";
 import { getCollection, type CollectionEntry } from "astro:content";
 
-export async function getStaticPaths({
-  paginate,
-}: {
-  paginate: (posts: CollectionEntry<"blog">[], options: unknown) => void;
-}) {
+export const getStaticPaths = (async ({ paginate }) => {
   const posts = await getCollection("blog");
-
   const allTags = [...new Set(posts.map((post) => post.data.topic))];
   return allTags.flatMap((tag) => {
     const filteredPosts = posts.filter((post) => post.data.topic === tag);
@@ -20,7 +16,7 @@ export async function getStaticPaths({
       pageSize: 10,
     });
   });
-}
+}) satisfies GetStaticPaths;
 export interface Props {
   page: Page<CollectionEntry<"blog">>;
 }
@@ -28,7 +24,7 @@ export interface Props {
 const { page } = Astro.props;
 const { tag } = Astro.params;
 const posts = (await getCollection("blog")).filter(
-  (post) => post.data.topic === tag,
+  (post) => post.data.topic === tag
 );
 ---
 
