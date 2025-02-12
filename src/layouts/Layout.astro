@@ -4,7 +4,7 @@ import Header from "@/components/Header.astro";
 import SEO from "@/components/SEO.astro";
 import ButtonUp from "@/components/ui/ButtonUp.astro";
 import { getLangFromUrl } from "@/i18n/utils";
-
+import { ClientRouter } from "astro:transitions";
 interface Props {
   title: string;
   description: string;
@@ -26,6 +26,7 @@ const language = getLangFromUrl(Astro.url) ?? lang;
       canonical={canonical}
     />
     <slot name="head" />
+    <ClientRouter />
   </head>
   <body>
     <Header />
@@ -39,7 +40,7 @@ const language = getLangFromUrl(Astro.url) ?? lang;
 
       const lang = localStorage.getItem("lang");
       if (lang !== getLangFromUrl(url)) {
-        window.location.replace(`/${lang}/`);
+        window.location.replace(`/${lang ?? ""}/`);
       }
     </script>
   </body>
