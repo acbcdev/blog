@@ -1,64 +1,53 @@
 ---
-import { getByLang, useTranslations } from "@/i18n/utils";
 import { SITE_TITLE, SITE_DESCRIPTION } from "@/consts";
 import { getCollection } from "astro:content";
-import { defaultLang, type languages } from "@/i18n/ui";
 import CardPost from "@/components/ui/CardPost.astro";
 import Layout from "@/layouts/Layout.astro";
-
-export interface Props {
-  lang?: keyof typeof languages;
-}
-const { lang = defaultLang } = Astro.props;
+import type { Lang } from "@/types/lang";
+import { splitLang } from "@/lib/content";
+type Props = {
+  lang: Lang;
+};
+const { lang } = Astro.props;
 const posts = (await getCollection("blog"))
+  .filter((i) => splitLang(i.slug)[0] === lang)
   .sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf())
-  .filter((post) => {
-    return getByLang(post, lang);
-  })
   .splice(0, 5);
 
+console.log(posts.length);
 const tags = [
   ...new Set(
-    posts.filter((post) => post.data.topic).map((post) => post.data.topic),
+    posts.filter((post) => post.data.topic).map((post) => post.data.topic)
   ),
 ];
-
-// const lang = getLangFromUrl(Astro.url);
-const t = useTranslations(lang);
 ---
 
-<Layout title={SITE_TITLE} description={SITE_DESCRIPTION} lang={lang}>
+<Layout title={SITE_TITLE} description={SITE_DESCRIPTION}>
   <main>
     <section>
-      <ul class="posts">
-        {
-          posts.map((post) => (
-            <li>
-              <CardPost post={post} />
-            </li>
-          ))
-        }
-      </ul>
-      <h4><a href={`posts/1`}>{t("home.more")}</a></h4>
+      <div class="posts">
+        {posts.map((post) => <CardPost post={post} />)}
+      </div>
+      <h4><a href={`${lang}/articles/1`}>More</a></h4>
     </section>
     <section class="container-tags">
-      <h3>{t("home.topic")}</h3>
-      <ul>
+      <h3>Topic</h3>
+      <div>
         {
           tags.map((tag) => (
-            <li class="tag">
+            <span class="tag">
               <a href={`/tags/${tag}/1`}>{tag}</a>
-            </li>
+            </span>
           ))
         }
-      </ul>
+      </div>
     </section>
   </main>
 </Layout>
 
 <style slot="head">
   main {
-    width: 960px;
+    width: 80%;
   }
   h4 {
     margin-block: 3rem;
@@ -71,35 +60,29 @@ const t = useTranslations(lang);
     }
   }
   .posts {
+    --size: 400px;
     display: flex;
+    gap: 1rem;
     flex-wrap: wrap;
-    gap: 2rem;
-  }
-  .posts li {
-    width: calc(50% - 1rem);
-  }
-
-  .posts li:first-child {
-    width: 100%;
-    margin-bottom: 1rem;
-    text-align: center;
-  }
-  .posts li:first-child img {
-    width: 100%;
-  }
-  .posts li:first-child .title {
-    font-size: 2.369rem;
+    .post:first-child {
+      width: 100%;
+      margin-bottom: 1rem;
+      text-align: center;
+    }
+    .post {
+      width: calc(50% - 1rem);
+    }
   }
 
   .container-tags {
     width: 100%;
     margin-block-start: 3rem;
-    & ul {
+    div {
       gap: 1rem;
       display: flex;
       flex-wrap: wrap;
       margin-top: 1.8rem;
-      & li {
+      span {
         transition-duration: 0.2s;
 
         &:hover {
@@ -120,18 +103,11 @@ const t = useTranslations(lang);
   }
 
   @media (max-width: 720px) {
-    ul {
-      gap: 0.5em;
-    }
-    .posts li {
+    main {
       width: 100%;
-      text-align: center;
     }
-    .posts li:first-child {
-      margin-bottom: 0;
-    }
-    .posts li:first-child .title {
-      font-size: 1.563em;
+    .posts {
+      --size: 250px;
     }
   }
 </style>
