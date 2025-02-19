@@ -3,72 +3,62 @@ import GithubSVG from "@/svg/github.astro";
 import TwitterSVG from "@/svg/twitter.astro";
 
 import { SITE_TITLE, LINKS } from "../consts";
-import { getLangFromUrl } from "@/i18n/utils";
-const lang = getLangFromUrl(Astro.url);
-// const [, path] = Astro.url.pathname.split(`${lang}/`);
 ---
 
 <header>
-	<nav>
-		<h2><a href={`/${lang}/`}>{SITE_TITLE}</a></h2>
-		<div class="internal-links"></div>
-		<div class="social-links">
-			<a href={LINKS.TWITTER} target="_blank" aria-label="Twitter Icon">
-				<TwitterSVG />
-			</a>
-			<a href={LINKS.GITHUB} target="_blank" aria-label="GitHub Icon">
-				<GithubSVG />
-			</a>
-		</div>
-	</nav>
+  <nav>
+    <h2><a href="/">{SITE_TITLE}</a></h2>
+    <div class="internal-links"></div>
+    <div class="social-links">
+      <a href={LINKS.TWITTER} target="_blank" aria-label="Twitter Icon">
+        <TwitterSVG />
+      </a>
+      <a href={LINKS.GITHUB} target="_blank" aria-label="GitHub Icon">
+        <GithubSVG />
+      </a>
+    </div>
+  </nav>
 </header>
 <style>
-	header {
-		margin: 0;
-		padding: 0 1em;
-	}
-	h2 {
-		margin: 0;
-		font-size: 1em;
-		cursor: pointer;
-		transition-duration: 0.2s;
-		&:hover {
-			transition-duration: 0.4s;
-
-			scale: 1.15;
-		}
-	}
-
-	h2 a,
-	h2 a.active {
-		text-decoration: none;
-	}
-	nav {
-		display: flex;
-		align-items: center;
-		justify-content: space-between;
-	}
-	nav a {
-		padding: 1em 0.5em;
-		color: var(--black);
-		border-bottom: 4px solid transparent;
-		text-decoration: none;
-	}
-	nav a.active {
-		text-decoration: none;
-		border-bottom-color: var(--tertiary);
-	}
-	.social-links,
-	.social-links a {
-		display: flex;
-	}
-	.social-links a:hover {
-		color: var(--accent);
-		transition-duration: 0.4s;
-	}
-	@media (max-width: 720px) {
-		.social-links {
-			display: none;
-		}
-	}
+  header {
+    margin: 0;
+    padding: 0 1rem;
+  }
+  h2 {
+    margin: 0;
+    cursor: pointer;
+    transition-duration: 0.2s;
+  }
+  h2 a,
+  h2 a.active {
+    text-decoration: none;
+  }
+  nav {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+  nav a {
+    padding: 1em 0.5em;
+    color: var(--black);
+    border-bottom: 4px solid transparent;
+    text-decoration: none;
+  }
+  nav a.active {
+    text-decoration: none;
+    border-bottom-color: var(--tertiary);
+  }
+  .social-links,
+  .social-links a {
+    display: flex;
+  }
+  .social-links a:hover {
+    color: var(--accent);
+    transition-duration: 0.4s;
+  }
+  @media (max-width: 720px) {
+    .social-links {
+      display: none;
+    }
+  }
 </style>
