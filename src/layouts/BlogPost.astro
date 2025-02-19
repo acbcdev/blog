@@ -3,15 +3,10 @@ import type { CollectionEntry } from "astro:content";
 import FormattedDate from "@/components/FormattedDate.astro";
 import Layout from "@/layouts/Layout.astro";
 import CodeBlock from "@/components/mdx/CodeBlock.astro";
-// import type { languages } from "@/i18n/ui";
-// import { getLangFromUrl } from "@/i18n/utils";
 type Props = CollectionEntry<"blog">["data"];
-
-const { title, description, pubDate, updatedDate, heroImage, tags } =
+import "@/styles/post.css";
+const { title, description, pubDate, updatedDate, heroImage, tags, id } =
   Astro.props;
-// const lang = getLangFromUrl(Astro.url);
-// console.log(lang);
-// <!-- import CodeBlock from "@/components/mdx/CodeBlock.astro"; -->
 ---
 
 <CodeBlock />
@@ -26,7 +21,7 @@ const { title, description, pubDate, updatedDate, heroImage, tags } =
               height={510}
               src={heroImage}
               alt=""
-              transition:name={title}
+              transition:name={`${id}-img`}
             />
           )
         }
@@ -34,7 +29,7 @@ const { title, description, pubDate, updatedDate, heroImage, tags } =
       <div class="prose">
         <div class="title">
           <div class="date">
-            <FormattedDate date={pubDate} />
+            <FormattedDate date={pubDate} transition:name="{id}-date" />
             {
               updatedDate && (
                 <div class="last-updated-on">
@@ -43,17 +38,22 @@ const { title, description, pubDate, updatedDate, heroImage, tags } =
               )
             }
           </div>
-          <h1>{title}</h1>
-          {
-            tags?.map((tag) => (
-              <a class="tag" href={`/tags/${tag}`}>
-                #{tag}
-              </a>
-            ))
-          }
+          <h1 transition:name={`${id}-title`}>{title}</h1>
+          <div class="tags">
+            {
+              tags?.map((tag) => (
+                <a class="tag" href={`/tags/${tag}`}>
+                  #{tag}
+                </a>
+              ))
+            }
+          </div>
+
           <hr />
         </div>
-        <slot />
+        <div class="content">
+          <slot />
+        </div>
       </div>
     </article>
   </main>
@@ -99,12 +99,22 @@ const { title, description, pubDate, updatedDate, heroImage, tags } =
   .last-updated-on {
     font-style: italic;
   }
-  .tag {
-    cursor: pointer;
-    text-decoration: none;
-    margin-inline: 0.5em;
-    &:hover {
-      text-decoration: underline;
+  .tags {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: center;
+    margin-block-end: 1rem;
+    gap: 0.5rem;
+    .tag {
+      cursor: pointer;
+      text-decoration: none;
+      &:hover {
+        text-decoration: underline;
+      }
     }
+  }
+  .content ul {
+    list-style: circle;
   }
 </style>

@@ -3,8 +3,8 @@ import Footer from "@/components/Footer.astro";
 import Header from "@/components/Header.astro";
 import SEO from "@/components/SEO.astro";
 import ButtonUp from "@/components/ui/ButtonUp.astro";
-import { getLangFromUrl } from "@/i18n/utils";
 import { ClientRouter } from "astro:transitions";
+import "@/styles/global.css";
 interface Props {
   title: string;
   description: string;
@@ -12,12 +12,11 @@ interface Props {
   image?: string;
   lang?: string;
 }
-const { title, description, canonical, image, lang = "es" } = Astro.props;
-const language = getLangFromUrl(Astro.url) ?? lang;
+const { title, description, canonical, image } = Astro.props;
 ---
 
 <!doctype html>
-<html lang={language}>
+<html>
   <head>
     <SEO
       description={description}
@@ -30,18 +29,17 @@ const language = getLangFromUrl(Astro.url) ?? lang;
   </head>
   <body>
     <Header />
-    <slot />
+    <div>
+      <slot />
+    </div>
     <ButtonUp />
     <Footer />
-
-    <script>
-      import { getLangFromUrl } from "@/i18n/utils";
-      const url = new URL(window.location.href);
-
-      const lang = localStorage.getItem("lang");
-      if (lang !== getLangFromUrl(url)) {
-        window.location.replace(`/${lang ?? ""}/`);
-      }
-    </script>
   </body>
 </html>
+<style>
+  body {
+    display: grid;
+    min-height: 100dvh;
+    grid-template-rows: auto 1fr auto;
+  }
+</style>
