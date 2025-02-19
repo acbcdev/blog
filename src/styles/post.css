@@ -1,0 +1,46 @@
+table {
+  width: 100%;
+  border-spacing: 0;
+  border: 1px solid var(--gray)
+}
+
+
+td,
+th {
+  padding-inline-start: 0.7rem;
+  border: 1px solid var(--gray)
+}
+
+pre {
+  padding: 1.5em;
+  border-radius: var(--radius);
+}
+
+pre>code {
+  all: unset;
+}
+
+.code-container {
+  margin-block: 1rem;
+  position: relative;
+
+  .copy-button {
+    display: none;
+    position: absolute;
+    cursor: pointer;
+    top: 0.5rem;
+    right: 0.5rem;
+    border: none;
+    transition-duration: 120ms;
+    padding: 0.1rem 0.5rem;
+    border-radius: var(--radius);
+
+    &:hover {
+      background: var(--accent);
+    }
+  }
+}
+
+.code-container:hover .copy-button {
+  display: inline;
+}
