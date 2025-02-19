@@ -7,20 +7,38 @@ export interface Props {
 }
 const { post } = Astro.props;
 const [lang, rest] = post.slug.split("/");
+const url = `/${lang}/article/${rest}/`;
 ---
 
-<a href={`/${lang}/blog/${rest}/`}>
-  <img width={720} height={360} src={post.data.heroImage} alt="" />
-  <h3 class="title">{post.data.title}</h3>
+<article class="post">
+  <header>
+    <a href={url}>
+      <img
+        src={post.data.heroImage}
+        transition:name={`${post.id}-img`}
+        alt=""
+      />
+    </a>
+  </header>
+  <h3 class="title line-clamp" transition:name={`${post.id}-title`}>
+    <a href={url}>{post.data.title}</a>
+  </h3>
+
   <p class="date">
-    <FormattedDate date={post.data.pubDate} />
+    <FormattedDate
+      date={post.data.pubDate}
+      transition:name={`${post.data.id}-date`}
+    />
   </p>
-</a>
+</article>
 
 <style>
+  article {
+    overflow: hidden;
+  }
   img {
     margin-bottom: 0.5rem;
-    border-radius: var(--radius-lg);
+    border-radius: var(--radius);
   }
   a {
     display: block;
@@ -32,8 +50,17 @@ const [lang, rest] = post.slug.split("/");
 
   .title {
     margin: 0;
-
     line-height: 1;
+    &:hover {
+      text-decoration: underline;
+      text-decoration-color: var(--accent);
+    }
+  }
+  .title.line-clamp {
+    overflow: hidden;
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 2;
   }
   .date {
     margin: 0;
