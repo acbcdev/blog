@@ -5,18 +5,19 @@ import SEO from "@/components/SEO.astro";
 import ButtonUp from "@/components/ui/ButtonUp.astro";
 import { ClientRouter } from "astro:transitions";
 import "@/styles/global.css";
+import type { Lang } from "@/types/lang";
 interface Props {
   title: string;
   description: string;
   canonical?: string;
   image?: string;
-  lang?: string;
+  lang?: Lang;
 }
-const { title, description, canonical, image } = Astro.props;
+const { title, description, canonical, image, lang = "es" } = Astro.props;
 ---
 
 <!doctype html>
-<html>
+<html lang={lang}>
   <head>
     <SEO
       description={description}
@@ -33,7 +34,7 @@ const { title, description, canonical, image } = Astro.props;
       <slot />
     </div>
     <ButtonUp />
-    <Footer />
+    <Footer lang={lang} />
   </body>
 </html>
 <style>
@@ -41,5 +42,13 @@ const { title, description, canonical, image } = Astro.props;
     display: grid;
     min-height: 100dvh;
     grid-template-rows: auto 1fr auto;
+    margin: 1rem;
+    width: 80%;
+    margin-inline: auto;
+  }
+  @media (max-width: 500px) {
+    body {
+      width: 100%;
+    }
   }
 </style>

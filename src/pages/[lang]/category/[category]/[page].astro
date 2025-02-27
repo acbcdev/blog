@@ -8,18 +8,30 @@ import Layout from "@/layouts/Layout.astro";
 import { splitLang } from "@/lib/content";
 import type { GetStaticPaths } from "astro";
 import { getCollection } from "astro:content";
+
+const posts = await getCollection("blog");
 export const getStaticPaths = (async ({ paginate }) => {
   const posts = await getCollection("blog");
+
   return LANGS.flatMap((lang) => {
     const postsFiltered = posts.filter((i) => splitLang(i.slug)[0] === lang);
-    return paginate(postsFiltered, {
-      params: { lang },
-      pageSize: 10,
+    const topics = [
+      ...new Set(postsFiltered.map((post) => post.data.topic).filter(Boolean)),
+    ];
+    return topics.flatMap((topic) => {
+      return paginate(
+        postsFiltered.filter((post) => post.data.topic === topic),
+        {
+          params: { lang, category: topic },
+          pageSize: 10,
+        }
+      );
     });
   });
 }) satisfies GetStaticPaths;
 const { page } = Astro.props;
-const { lang } = Astro.params;
+const { lang, category } = Astro.params;
+
 const topics = await TopicsByLang(lang);
 ---
 
@@ -27,7 +39,12 @@ const topics = await TopicsByLang(lang);
   <section class="topics">
     {
       topics.map((topic) => (
-        <Topic href={`/${lang}/category/${topic}/1`} variant="outline">
+        <Topic
+          href={`/${lang}/category/${topic}/1`}
+          transition:name={`${topic}-topics`}
+          style={{ order: category === topic ? -1 : 0 }}
+          variant={category === topic ? "default" : "outline"}
+        >
           {topic}
         </Topic>
       ))
@@ -37,8 +54,10 @@ const topics = await TopicsByLang(lang);
     {page.data.map((i) => <CardPost post={i} offDescription />)}
   </ContainerPosts>
 </Layout>
-
 <style>
+  h1 {
+    text-transform: capitalize;
+  }
   .topics {
     display: flex;
     gap: 1rem;

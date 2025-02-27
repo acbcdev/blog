@@ -5,6 +5,8 @@ import CardPost from "@/components/ui/CardPost.astro";
 import Layout from "@/layouts/Layout.astro";
 import type { Lang } from "@/types/lang";
 import { splitLang } from "@/lib/content";
+import ContainerPosts from "@/components/ContainerPosts.astro";
+import Topic from "@/components/ui/Topic.astro";
 type Props = {
   lang: Lang;
 };
@@ -12,9 +14,8 @@ const { lang } = Astro.props;
 const posts = (await getCollection("blog"))
   .filter((i) => splitLang(i.slug)[0] === lang)
   .sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf())
-  .splice(0, 5);
+  .splice(0, 9);
 
-console.log(posts.length);
 const tags = [
   ...new Set(
     posts.filter((post) => post.data.topic).map((post) => post.data.topic)
@@ -22,22 +23,22 @@ const tags = [
 ];
 ---
 
-<Layout title={SITE_TITLE} description={SITE_DESCRIPTION}>
+<Layout title={SITE_TITLE} description={SITE_DESCRIPTION} lang={lang}>
   <main>
     <section>
-      <div class="posts">
-        {posts.map((post) => <CardPost post={post} />)}
-      </div>
-      <h4><a href={`${lang}/articles/1`}>More</a></h4>
+      <ContainerPosts size="xl">
+        {posts.map((post) => <CardPost offDescription post={post} />)}
+      </ContainerPosts>
+      <h4><a href={`${lang}/articles/1`}>More Articles</a></h4>
     </section>
     <section class="container-tags">
-      <h3>Topic</h3>
+      <h3>Topics</h3>
       <div>
         {
           tags.map((tag) => (
-            <span class="tag">
-              <a href={`/tags/${tag}/1`}>{tag}</a>
-            </span>
+            <Topic variant="ghost" href={`/${lang}/category/${tag}/1`}>
+              #{tag}
+            </Topic>
           ))
         }
       </div>
@@ -47,7 +48,7 @@ const tags = [
 
 <style slot="head">
   main {
-    width: 80%;
+    width: 100%;
   }
   h4 {
     margin-block: 3rem;
@@ -60,54 +61,25 @@ const tags = [
     }
   }
   .posts {
-    --size: 400px;
-    display: flex;
+    --size-item: 500px;
+    display: grid;
+    margin-inline: auto;
+    grid-template-columns: repeat(auto-fit, minmax(var(--size-item), 1fr));
     gap: 1rem;
+  }
+
+  .container-tags div {
+    display: flex;
     flex-wrap: wrap;
-    .post:first-child {
-      width: 100%;
-      margin-bottom: 1rem;
-      text-align: center;
-    }
-    .post {
-      width: calc(50% - 1rem);
-    }
+    margin-top: 1.8rem;
+    gap: 0.7rem;
   }
-
-  .container-tags {
-    width: 100%;
-    margin-block-start: 3rem;
-    div {
-      gap: 1rem;
-      display: flex;
-      flex-wrap: wrap;
-      margin-top: 1.8rem;
-      span {
-        transition-duration: 0.2s;
-
-        &:hover {
-          scale: 1.1;
-        }
-      }
-      & a {
-        border-radius: 2rem;
-        padding: 0.8rem 1.2rem;
-
-        border: 3px solid rgb(var(--gray-light));
-        text-decoration: none;
-        &:hover {
-          border-color: var(--accent);
-        }
-      }
-    }
-  }
-
   @media (max-width: 720px) {
     main {
       width: 100%;
     }
     .posts {
-      --size: 250px;
+      --size-item: 250px;
     }
   }
 </style>
