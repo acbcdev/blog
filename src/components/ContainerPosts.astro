@@ -1,0 +1,32 @@
+---
+type Props = {
+  size?: "sm" | "md" | "lg" | "xl";
+};
+const { size = "lg" } = Astro.props;
+
+const sizes = {
+  sm: "200px",
+  md: "250px",
+  lg: "300px",
+  xl: "350px",
+};
+---
+
+<section class="posts"><slot /></section>
+<style define:vars={{ size: sizes[size] }}>
+  .posts {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(var(--size), 1fr));
+    margin-inline: auto;
+    gap: 1rem;
+    .post {
+      flex-basis: var(--size-item);
+      /* width: fit-content; */
+    }
+  }
+  @media (min-width: 768px) {
+    .posts {
+      --size: 300px;
+    }
+  }
+</style>
