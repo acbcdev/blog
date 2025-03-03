@@ -15,8 +15,9 @@ const sizes = {
 <section class="posts"><slot /></section>
 <style define:vars={{ size: sizes[size] }}>
   .posts {
+    --fr: 0.5fr;
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(var(--size), 1fr));
+    grid-template-columns: repeat(auto-fit, minmax(var(--size), var(--fr)));
     margin-inline: auto;
     gap: 1rem;
     .post {
@@ -24,9 +25,10 @@ const sizes = {
       /* width: fit-content; */
     }
   }
-  @media (min-width: 768px) {
+  @media (max-width: 768px) {
     .posts {
       --size: 300px;
+      --fr: 1fr;
     }
   }
 </style>
