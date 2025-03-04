@@ -9,7 +9,6 @@ import { splitLang } from "@/lib/content";
 import type { GetStaticPaths } from "astro";
 import { getCollection } from "astro:content";
 
-const posts = await getCollection("blog");
 export const getStaticPaths = (async ({ paginate }) => {
   const posts = await getCollection("blog");
 
