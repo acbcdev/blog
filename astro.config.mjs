@@ -8,7 +8,7 @@ import sitemap from "@astrojs/sitemap";
 
 // https://astro.build/config
 export default defineConfig({
-  site: "https://example.com",
+  site: "https://blog.acbc.dev",
   output: "static",
   integrations: [
     mdx({
@@ -17,7 +17,15 @@ export default defineConfig({
       },
       syntaxHighlight: "shiki",
     }),
-    sitemap(),
+    sitemap({
+      i18n: {
+        defaultLocale: "es",
+        locales: {
+          en: "en-US",
+          es: "es-ES",
+        },
+      },
+    }),
   ],
   markdown: {
     syntaxHighlight: "shiki",
