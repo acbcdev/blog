@@ -7,7 +7,8 @@
     "start": "astro dev",
     "build": "astro check && astro build",
     "preview": "astro preview",
-    "astro": "astro"
+    "astro": "astro",
+    "format": "prettier --write ."
   },
   "dependencies": {
     "@astrojs/check": "^0.9.4",
@@ -18,6 +19,8 @@
     "typescript": "^5.5.3"
   },
   "devDependencies": {
-    "@shikijs/transformers": "^1.10.3"
+    "@shikijs/transformers": "^1.10.3",
+    "prettier": "3.5.3",
+    "prettier-plugin-astro": "0.14.1"
   }
 }
