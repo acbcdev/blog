@@ -11,6 +11,6 @@
  * @returns {[string, string]} An array where the first element is the language and the second is the rest of the URL.
  */
 export function splitLang(url: string): [string, string] {
-	const [lang, rest] = url.split("/");
-	return [lang, rest];
+  const [lang, rest] = url.split("/");
+  return [lang, rest];
 }

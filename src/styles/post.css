@@ -1,14 +1,13 @@
 table {
   width: 100%;
   border-spacing: 0;
-  border: 1px solid var(--gray)
+  border: 1px solid var(--gray);
 }
-
 
 td,
 th {
   padding-inline-start: 0.7rem;
-  border: 1px solid var(--gray)
+  border: 1px solid var(--gray);
 }
 
 pre {
@@ -16,7 +15,7 @@ pre {
   border-radius: var(--radius);
 }
 
-pre>code {
+pre > code {
   all: unset;
 }
 

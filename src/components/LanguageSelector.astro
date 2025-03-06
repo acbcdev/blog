@@ -1,0 +1,38 @@
+---
+import { languages } from "../i18n/ui";
+
+const { lang } = Astro.params;
+const path = Astro.url.pathname.replace(`/${lang}`, "");
+---
+
+<div class="language-selector">
+  {
+    Object.entries(languages).map(([code, name]) => (
+      <a
+        href={`/${code}${path}`}
+        class={`lang-link ${code === lang ? "active" : ""}`}
+      >
+        {name}
+      </a>
+    ))
+  }
+</div>
+
+<style>
+  .language-selector {
+    display: flex;
+    gap: 1rem;
+  }
+  .lang-link {
+    text-decoration: none;
+    color: #666;
+    font-size: 0.9rem;
+  }
+  .lang-link.active {
+    color: #000;
+    font-weight: bold;
+  }
+  .lang-link:hover {
+    color: #000;
+  }
+</style>

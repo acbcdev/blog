@@ -7,10 +7,15 @@ import type { Lang } from "@/types/lang";
 import { splitLang } from "@/lib/content";
 import ContainerPosts from "@/components/ContainerPosts.astro";
 import Topic from "@/components/ui/Topic.astro";
+import { useTranslations } from "../i18n/utils";
+
 type Props = {
   lang: Lang;
 };
+
 const { lang } = Astro.props;
+const t = useTranslations(lang);
+
 const posts = (await getCollection("blog"))
   .filter((i) => splitLang(i.slug)[0] === lang)
   .sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf())
@@ -18,7 +23,7 @@ const posts = (await getCollection("blog"))
 
 const tags = [
   ...new Set(
-    posts.filter((post) => post.data.topic).map((post) => post.data.topic)
+    posts.filter((post) => post.data.topic).map((post) => post.data.topic),
   ),
 ];
 ---
@@ -29,10 +34,10 @@ const tags = [
       <ContainerPosts size="xl">
         {posts.map((post) => <CardPost offDescription post={post} />)}
       </ContainerPosts>
-      <h4><a href={`${lang}/articles/1`}>More Articles</a></h4>
+      <h4><a href={`/${lang}/articles/1`}>{t("nav.articles")}</a></h4>
     </section>
     <section class="container-tags">
-      <h3>Topics</h3>
+      <h3>{t("blog.categories")}</h3>
       <div>
         {
           tags.map((tag) => (

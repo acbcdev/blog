@@ -1,4 +1,4 @@
-import type { PropsAddGlobalEventListener } from '@/types/dom'
+import type { PropsAddGlobalEventListener } from "@/types/dom";
 /**
  * Get element from dom by selector string
  * @example
@@ -10,8 +10,8 @@ import type { PropsAddGlobalEventListener } from '@/types/dom'
  */
 export const $ = <T extends HTMLElement>(
   selector: string,
-  context: Document | HTMLElement = document
-) => context.querySelector<T>(selector)
+  context: Document | HTMLElement = document,
+) => context.querySelector<T>(selector);
 
 /**
  * Get elements from dom by selector string
@@ -23,10 +23,8 @@ export const $ = <T extends HTMLElement>(
  */
 export const $$ = <T extends HTMLElement>(
   selector: string,
-  context: Document | HTMLElement = document
-) => context.querySelectorAll<T>(selector)
-
-
+  context: Document | HTMLElement = document,
+) => context.querySelectorAll<T>(selector);
 
 /**
  * Adds a global event listener to the specified parent element default to the document.
@@ -38,9 +36,12 @@ export const $$ = <T extends HTMLElement>(
  * @param {Document | HTMLElement} [options.parent=document] - The parent element to attach the event listener to.
  * @return {void}
  */
-export function addGlobalEventListener(event: keyof HTMLElementEventMap, { selector, callback, parent = document }: PropsAddGlobalEventListener): void {
+export function addGlobalEventListener(
+  event: keyof HTMLElementEventMap,
+  { selector, callback, parent = document }: PropsAddGlobalEventListener,
+): void {
   parent.addEventListener(event, (e) => {
-    const eventTarget = e?.target as Element
-    if (eventTarget.matches(selector)) callback(e)
-  })
+    const eventTarget = e?.target as Element;
+    if (eventTarget.matches(selector)) callback(e);
+  });
 }
